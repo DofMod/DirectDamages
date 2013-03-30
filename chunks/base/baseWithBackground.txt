@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition useCache="false" debug="false">
+	<Constants>
+		<!-- Generic path -->
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+	</Constants>
+	
+	<Container name="mainCtr">
+		#content
+		
+		<Container name="backgroundCtr" strata="LOW">
+			<Anchors>
+				<Anchor relativePoint="TOPLEFT">
+					<AbsDimension x="-5" y="-5" />
+				</Anchor>
+				<Anchor relativePoint="BOTTOMRIGHT">
+					<AbsDimension x="5" y="5" />
+				</Anchor>
+			</Anchors>
+			<shadowColor>[colors.ui.shadow]</shadowColor>
+			<bgCornerRadius>10</bgCornerRadius>
+			<bgColor>[colors.tooltip.bg]</bgColor>
+			<bgAlpha>[colors.tooltip.bg.alpha]</bgAlpha>
+		</Container>
+	</Container>
+</Definition>

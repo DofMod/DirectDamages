@@ -1,0 +1,18 @@
+<Container>
+	<Anchors>
+		<Anchor relativeTo="$LAST" relativePoint="BOTTOMLEFT" />
+	</Anchors>
+	<Size>
+		<RelDimension x="1" />
+		<AbsDimension y="9" />
+	</Size>
+	<Texture>
+		<!--<uri>[local.assets]tooltip_tx_separator</uri>-->
+		<Size>
+			<AbsDimension x="200" y="9" />
+		</Size>
+		<Anchors>
+			<Anchor relativePoint="CENTER" point="CENTER" />
+		</Anchors>
+	</Texture>
+</Container>

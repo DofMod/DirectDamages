@@ -1,0 +1,21 @@
+# Build and Release Folders
+bin-debug/
+bin-release/
+
+# Project property files
+.actionScriptProperties
+.flexProperties
+.settings/
+.project
+
+# FlashDevelop configuration files
+*.as3proj
+*.docproj
+doc/
+libs/
+obj/
+SpellsTracker.swf
+SpellsTracker.lxml
+
+# Windows
+*.lnk

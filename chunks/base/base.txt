@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Definition SYSTEM "../dtd/ui.dtd">
+<Definition useCache="false">
+	<Constants>
+		<!-- Generic path -->
+		<Constant name="assets" value="[config.ui.skin]assets.swf|" />
+		<Constant name="css" value="[config.ui.skin]css/" />
+		<Constant name="emblems" value="[config.content.path]gfx/emblems/" />
+		<Constant name="alignment" value="[config.content.path]gfx/alignments/" />
+	</Constants>
+	<Container name="mainCtr">
+		#content
+	</Container>
+</Definition>

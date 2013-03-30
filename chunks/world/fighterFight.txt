@@ -1,0 +1,42 @@
+<!-- ALIGNEMENT -->
+
+<Container name="ctr_alignment_top">
+	<Size>
+		<AbsDimension x="0" y="0" />
+	</Size>
+	<Texture name="tx_alignment" />
+</Container>
+
+<Container name="ctr_alignment_bottom">
+	<Size>
+		<AbsDimension x="0" y="0" />
+	</Size>
+	<Texture name="tx_alignmentBottom" />
+</Container>
+
+<Container name="infosCtr">
+
+	<Label name="lbl_name">
+		<autoResize>false</autoResize>
+		<text>#playerName</text>
+		<css>[local.css]tooltip_title.css</css>
+	</Label>
+
+	<!-- Utilisé pour titre et niveau en preparation de combat -->
+	<Label name="lbl_info">
+		<autoResize>false</autoResize>
+		<css>[local.css]tooltip_title.css</css>
+	</Label>
+	
+	<Container name="tx_back" strata="LOW">
+			<Anchors>
+				<Anchor>
+					<AbsDimension x="-4" y="-4" />
+				</Anchor>
+			</Anchors>
+			<shadowColor>[colors.ui.shadow]</shadowColor>
+			<bgCornerRadius>10</bgCornerRadius>
+			<bgColor>[colors.tooltip.bg]</bgColor>
+			<bgAlpha>[colors.tooltip.bg.alpha]</bgAlpha>
+	</Container>
+</Container>
