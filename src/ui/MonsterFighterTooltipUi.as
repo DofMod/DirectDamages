@@ -46,7 +46,7 @@ package ui
 					levelFormated = uiApi.getText("ui.common.level"); // + "Niveau"
 				}
 				
-				lbl_info.text = levelFormated + " " + fightApi.getFighterLevel(monsterInfos.contextualId);
+				lbl_info.appendText(levelFormated + " " + fightApi.getFighterLevel(monsterInfos.contextualId), "p");
 			}
 			else if (SpellManager.getInstance().getCastSpell())
 			{
@@ -54,10 +54,14 @@ package ui
 			}
 			else
 			{
-				lbl_info.text = "";
+				lbl_info.fullWidth();
+				lbl_info.removeFromParent();
+				return;
 			}
 			
+			lbl_info.useCustomFormat = true;
 			lbl_info.fullWidth();
+			infosCtr.addContent(lbl_info);
 		}
 		
 		/**
@@ -72,7 +76,7 @@ package ui
 			{
 				lbl_name.text = fightApi.getFighterName(monsterInfos.contextualId);
 			}
-			if (monsterInfos.stats.shieldPoints > 0)
+			else if (monsterInfos.stats.shieldPoints > 0)
 			{
 				lbl_name.text = fightApi.getFighterName(monsterInfos.contextualId) + " (" + monsterInfos.stats.lifePoints;
 				lbl_name.appendText("+" + monsterInfos.stats.shieldPoints, "shield");

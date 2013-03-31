@@ -86,6 +86,9 @@ package ui.abstract
 			
 			var fighterInfos:GameFightFighterInformations = params.data;
 			
+			lbl_name.text = "";
+			lbl_info.text = "";
+			
 			updateNameLabel(fighterInfos);
 			updateInfoLabel(fighterInfos);
 			
@@ -158,8 +161,6 @@ package ui.abstract
 		 */
 		protected function displayDamage(damage:Damage, monsterLife:int):void
 		{
-			lbl_info.text = "";
-			
 			if (damage.min == 0 && damage.max == 0 && damage.minCC == 0 && damage.maxCC == 0)
 				return;
 			

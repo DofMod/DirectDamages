@@ -71,7 +71,7 @@ package ui
 					info += uiApi.getText("ui.common.level");
 				}
 				
-				lbl_info.text = info + " " + characterInfos.level;
+				lbl_info.appendText(info + " " + characterInfos.level, "p");
 			}
 			else if (SpellManager.getInstance().getCastSpell())
 			{
@@ -79,6 +79,7 @@ package ui
 			}
 			else
 			{
+				lbl_info.fullWidth();
 				lbl_info.removeFromParent();
 				return;
 			}

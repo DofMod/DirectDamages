@@ -76,8 +76,8 @@ package utils
 				
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1));
 				
-				if (distance != 1 && isSpellZone(spell.spellZoneEffects, ii))
-					damageLine = applyBonus(damageLine, 1.1 - 0.1 * distance);
+				if (distance != 0 && isSpellZone(spell.spellZoneEffects, ii))
+					damageLine = applyBonus(damageLine, 1.0 - 0.1 * distance);
 				
 				damageLine = applyReductions(effect, damageLine, targetInfos.stats);
 				
@@ -92,8 +92,8 @@ package utils
 				
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), true);
 				
-				if (distance != 1 && isSpellZone(spell.spellZoneEffects, ii))
-					damageLine = applyBonus(damageLine, 1.1 - 0.1 * distance);
+				if (distance != 0 && isSpellZone(spell.spellZoneEffects, ii))
+					damageLine = applyBonus(damageLine, 1.0 - 0.1 * distance);
 				
 				damageLine = applyReductions(effect, damageLine, targetInfos.stats, true);
 				
@@ -128,8 +128,8 @@ package utils
 			{
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, 0, breedMalus);
 				
-				if (isWeaponZone && distance % 2 == 0)
-					damageLine = applyBonus(damageLine, 1.1);
+				if (isWeaponZone && distance % 2 == 1)
+					damageLine = applyBonus(damageLine, 0.75);
 				
 				damageLine = applyReductions(effect, damageLine, targetInfos.stats);
 				
@@ -142,8 +142,8 @@ package utils
 			{
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, 0, breedMalus);
 				
-				if (isWeaponZone && distance % 2 == 0)
-					damageLine = applyBonus(damageLine, 1.1);
+				if (isWeaponZone && distance % 2 == 1)
+					damageLine = applyBonus(damageLine, 0.75);
 				
 				damageLine = applyReductions(effect, damageLine, targetInfos.stats);
 				
@@ -281,7 +281,7 @@ package utils
 		 */
 		private static function isWeaponZone(weaponTypeId:int):Boolean
 		{
-			if (weaponTypeId == ItemTypeIdEnum.HAMMER || weaponTypeId == ItemTypeIdEnum.STAFF)
+			if (weaponTypeId == ItemTypeIdEnum.HAMMER || weaponTypeId == ItemTypeIdEnum.STAFF || weaponTypeId == ItemTypeIdEnum.SHOVEL || weaponTypeId == ItemTypeIdEnum.AXE)
 				return true;
 				
 			return false;

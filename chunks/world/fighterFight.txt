@@ -29,14 +29,17 @@
 	</Label>
 	
 	<Container name="tx_back" strata="LOW">
-			<Anchors>
-				<Anchor>
-					<AbsDimension x="-4" y="-4" />
-				</Anchor>
-			</Anchors>
-			<shadowColor>[colors.ui.shadow]</shadowColor>
-			<bgCornerRadius>10</bgCornerRadius>
-			<bgColor>[colors.tooltip.bg]</bgColor>
-			<bgAlpha>[colors.tooltip.bg.alpha]</bgAlpha>
+		<Anchors>
+			<Anchor relativePoint="TOPLEFT">
+				<AbsDimension x="-5" y="-5" />
+			</Anchor>
+			<Anchor relativePoint="BOTTOMRIGHT">
+				<AbsDimension x="5" y="5" />
+			</Anchor>
+		</Anchors>
+		<shadowColor>[colors.ui.shadow]</shadowColor>
+		<bgCornerRadius>10</bgCornerRadius>
+		<bgColor>[colors.tooltip.bg]</bgColor>
+		<bgAlpha>[colors.tooltip.bg.alpha]</bgAlpha>
 	</Container>
 </Container>

@@ -5,7 +5,7 @@
 		<!-- Nom affiché dans la liste des modules -->
 		<name>DirectDamages</name>
 		<!-- Version du module -->
-		<version>0.301</version>
+		<version>0.342</version>
 		<!-- Dernière version de dofus pour laquelle ce module fonctionne -->
 		<dofusVersion>2.11.0</dofusVersion>
 		<!-- Auteur du module -->
