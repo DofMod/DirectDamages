@@ -14,8 +14,8 @@ bin-release/
 doc/
 libs/
 obj/
-SpellsTracker.swf
-SpellsTracker.lxml
+DirectDamages.swf
+DirectDamages.lxml
 
 # Windows
 *.lnk
