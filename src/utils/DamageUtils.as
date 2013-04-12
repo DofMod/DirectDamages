@@ -17,21 +17,6 @@ package utils
 	 */
 	public class DamageUtils 
 	{
-		public static var breedMalus:Array = new Array();
-		breedMalus[ItemTypeIdEnum.BOW]     = new Array(00, 10, 10, 10, 05, 10, 10, 10, 10, 00, 10, 10, 10, 05, 10);
-		breedMalus[ItemTypeIdEnum.WAND]    = new Array(00, 05, 10, 10, 10, 05, 10, 00, 10, 10, 05, 10, 10, 10, 10);
-		breedMalus[ItemTypeIdEnum.STAFF]   = new Array(00, 00, 05, 10, 10, 10, 10, 05, 10, 10, 00, 10, 05, 10, 00);
-		breedMalus[ItemTypeIdEnum.DAGGER]  = new Array(00, 10, 10, 10, 00, 10, 05, 10, 10, 05, 10, 10, 10, 10, 10);
-		breedMalus[ItemTypeIdEnum.SWORD]   = new Array(00, 10, 10, 10, 10, 10, 00, 10, 00, 10, 10, 10, 10, 00, 10);
-		breedMalus[ItemTypeIdEnum.HAMMER]  = new Array(00, 10, 00, 05, 10, 00, 10, 10, 05, 10, 10, 10, 10, 10, 10);
-		breedMalus[ItemTypeIdEnum.SHOVEL]  = new Array(00, 10, 10, 00, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
-		breedMalus[ItemTypeIdEnum.AXE]     = new Array(00, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 00, 10, 05);
-		breedMalus[ItemTypeIdEnum.TOOL]    = new Array(00, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
-		breedMalus[ItemTypeIdEnum.PICKAXE] = new Array(00, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
-		breedMalus[ItemTypeIdEnum.SCYTHE]  = new Array(00, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10);
-		//breedMalus[ItemTypeIdEnum.SOULSTONE] = new Array();
-		//breedMalus[ItemTypeIdEnum.NET] = new Array();
-		
 		/**
 		 * 
 		 * @param	spell
@@ -115,7 +100,6 @@ package utils
 		private static function computeDamagesWeapon(weapon:WeaponWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
 			var isWeaponZone:Boolean = isWeaponZone(weapon.typeId);
-			var breedMalus:int = getBreedMalus(Api.player.getPlayedCharacterInfo().breed, weapon.typeId);
 			
 			var effect:EffectInstance;
 			
@@ -126,7 +110,7 @@ package utils
 			// Simple damages
 			for each (effect in weapon.effects)
 			{
-				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, 0, breedMalus);
+				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, 0);
 				
 				if (isWeaponZone && distance % 2 == 1)
 					damageLine = applyBonus(damageLine, 0.75);
@@ -140,7 +124,7 @@ package utils
 			// Critical damages
 			for each (effect in weapon.effects)
 			{
-				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, 0, breedMalus);
+				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, 0);
 				
 				if (isWeaponZone && distance % 2 == 1)
 					damageLine = applyBonus(damageLine, 0.75);
@@ -162,13 +146,11 @@ package utils
 		 * @param	damageMax	Maximal damage.
 		 * @param	isCriticalDamage	Is a critical hit ?
 		 * @param	skillBonus	Bonus of the skill in percent.
-		 * @param	breedMalus	Malus of the breed in percent.
 		 * @return	The damage that whill be deal by that effect.
 		 */
-		private static function computeInitialDamage(damageType:int, damageMin:int, damageMax:int, isCriticalDamage:Boolean = false, skillBonus:Number = 0, breedMalus:Number = 0):Range
+		private static function computeInitialDamage(damageType:int, damageMin:int, damageMax:int, isCriticalDamage:Boolean = false, skillBonus:Number = 0):Range
 		{
 			var characterStats:CharacterCharacteristicsInformations = Api.fight.getCurrentPlayedCharacteristicsInformations();
-			var characterBreed:int = Api.player.getPlayedCharacterInfo().breed;
 			
 			var allDamagePercent:int = characterStats.damagesBonusPercent.objectsAndMountBonus + characterStats.damagesBonusPercent.contextModif;
 			var criticalDamage:int = characterStats.criticalDamageBonus.objectsAndMountBonus + characterStats.criticalDamageBonus.contextModif;
@@ -185,8 +167,8 @@ package utils
 					
 					var waterDamage:int = allDamage + characterStats.waterDamageBonus.objectsAndMountBonus + characterStats.waterDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((chance + allDamagePercent) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((chance + allDamagePercent) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((chance + allDamagePercent) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((chance + allDamagePercent) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 				case 92: // earth theft
@@ -196,8 +178,8 @@ package utils
 					
 					var earthDamage:int = allDamage + characterStats.earthDamageBonus.objectsAndMountBonus + characterStats.earthDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((strength + allDamagePercent) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((strength + allDamagePercent) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 				case 93: // air theft
@@ -207,8 +189,8 @@ package utils
 					
 					var airDamage:int = allDamage + characterStats.airDamageBonus.objectsAndMountBonus + characterStats.airDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((agility + allDamagePercent) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((agility + allDamagePercent) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((agility + allDamagePercent) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((agility + allDamagePercent) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 				case 94: // fire theft
@@ -218,8 +200,8 @@ package utils
 					
 					var fireDamage:int = allDamage + characterStats.fireDamageBonus.objectsAndMountBonus + characterStats.fireDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((intelligence + allDamagePercent) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((intelligence + allDamagePercent) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((intelligence + allDamagePercent) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((intelligence + allDamagePercent) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 				case 95: // neutral theft (??)
@@ -229,30 +211,13 @@ package utils
 					
 					var neutralDamage:int = allDamage + characterStats.neutralDamageBonus.objectsAndMountBonus + characterStats.neutralDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((strength + allDamagePercent) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + ((skillBonus - breedMalus) / 100))) * (1 + ((strength + allDamagePercent) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 			}
 			
 			return damage;
-		}
-		
-		/**
-		 * Get the breed malus.
-		 * 
-		 * @param	breedId	Index of the breed.
-		 * @param	weapondTypeId	TypeId of the weapon.
-		 * @return	The breed malus in percent.
-		 */
-		private static function getBreedMalus(breedId:int, weaponTypeId:int):Number
-		{
-			if (breedMalus[weaponTypeId] === undefined || breedMalus[weaponTypeId][breedId] === undefined)
-			{
-				return 0;
-			}
-			
-			return breedMalus[weaponTypeId][breedId];
 		}
 		
 		/**
