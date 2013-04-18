@@ -7,6 +7,7 @@ package utils
 	import d2network.CharacterCharacteristicsInformations;
 	import d2network.GameFightFighterInformations;
 	import d2network.GameFightMinimalStats;
+	import enum.EffectIdEnum;
 	import enum.ItemTypeIdEnum;
 	import types.Damage;
 	import types.Range;
@@ -277,32 +278,32 @@ package utils
 		{
 			switch (effect.effectId) 
 			{
-				case 91: // water theft
-				case 96: // water damages
+				case EffectIdEnum.WATER_THEFT:
+				case EffectIdEnum.WATER:
 					damage.min = (1 - targetStats.waterElementResistPercent / 100) * (damage.min - targetStats.waterElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.waterElementResistPercent / 100) * (damage.max - targetStats.waterElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case 92: // earth theft
-				case 97: // earth damage
+				case EffectIdEnum.EARTH_THEFT:
+				case EffectIdEnum.EARTH:
 					damage.min = (1 - targetStats.earthElementResistPercent / 100) * (damage.min - targetStats.earthElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.earthElementResistPercent / 100) * (damage.max - targetStats.earthElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case 93: // air theft
-				case 98: // air damage
+				case EffectIdEnum.AIR_THEFT:
+				case EffectIdEnum.AIR:
 					damage.min = (1 - targetStats.airElementResistPercent / 100) * (damage.min - targetStats.airElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.airElementResistPercent / 100) * (damage.max - targetStats.airElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case 94: // fire theft
-				case 99: // fire damage
+				case EffectIdEnum.FIRE_THEFT:
+				case EffectIdEnum.FIRE:
 					damage.min = (1 - targetStats.fireElementResistPercent / 100) * (damage.min - targetStats.fireElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.fireElementResistPercent / 100) * (damage.max - targetStats.fireElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case 95: // neutral theft (??)
-				case 100: // neutral damage
+				case EffectIdEnum.NEUTRAL_THEFT:
+				case EffectIdEnum.NEUTRAL:
 					damage.min = (1 - targetStats.neutralElementResistPercent / 100) * (damage.min - targetStats.neutralElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.neutralElementResistPercent / 100) * (damage.max - targetStats.neutralElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
