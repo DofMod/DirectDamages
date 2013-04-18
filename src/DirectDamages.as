@@ -20,7 +20,7 @@ package
 	 *
 	 * @author Relena
 	 */
-	public class Noob extends Sprite
+	public class DirectDamages extends Sprite
 	{
 		//::////////////////////////////////////////////////////////////////////
 		//::// Properties
