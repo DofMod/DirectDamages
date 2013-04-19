@@ -161,8 +161,8 @@ package utils
 			
 			switch (damageType) 
 			{
-				case 91: // water theft
-				case 96: // water damages
+				case EffectIdEnum.WATER_THEFT:
+				case EffectIdEnum.WATER:
 					var chance:int = characterStats.chance.base + characterStats.chance.objectsAndMountBonus + characterStats.chance.contextModif;
 					chance = chance > 0 ? chance : 0;
 					
@@ -172,8 +172,8 @@ package utils
 					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((chance + allDamagePercent) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
-				case 92: // earth theft
-				case 97: // earth damage
+				case EffectIdEnum.EARTH_THEFT:
+				case EffectIdEnum.EARTH:
 					var strength:int = characterStats.strength.base + characterStats.strength.objectsAndMountBonus + characterStats.strength.contextModif;
 					strength = strength > 0 ? strength : 0;
 					
@@ -183,8 +183,8 @@ package utils
 					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
-				case 93: // air theft
-				case 98: // air damage
+				case EffectIdEnum.AIR_THEFT:
+				case EffectIdEnum.AIR:
 					var agility:int = characterStats.agility.base + characterStats.agility.objectsAndMountBonus + characterStats.agility.contextModif;
 					agility = agility > 0 ? agility : 0;
 					
@@ -194,8 +194,8 @@ package utils
 					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((agility + allDamagePercent) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
-				case 94: // fire theft
-				case 99: // fire damage
+				case EffectIdEnum.FIRE_THEFT:
+				case EffectIdEnum.FIRE:
 					var intelligence:int = characterStats.intelligence.base + characterStats.intelligence.objectsAndMountBonus + characterStats.intelligence.contextModif;
 					agility = agility > 0 ? agility : 0;
 					
@@ -205,8 +205,8 @@ package utils
 					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((intelligence + allDamagePercent) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
-				case 95: // neutral theft (??)
-				case 100: // neutral damage
+				case EffectIdEnum.NEUTRAL_THEFT:
+				case EffectIdEnum.NEUTRAL:
 					strength = characterStats.strength.base     + characterStats.strength.objectsAndMountBonus     + characterStats.strength.contextModif;
 					strength = strength > 0 ? strength : 0;
 					
