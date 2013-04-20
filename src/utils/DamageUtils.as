@@ -9,6 +9,7 @@ package utils
 	import d2network.GameFightMinimalStats;
 	import enum.EffectIdEnum;
 	import enum.ItemTypeIdEnum;
+	import enum.TargetMaskEnum;
 	import types.Damage;
 	import types.Range;
 	
@@ -49,6 +50,13 @@ package utils
 		 */
 		private static function computeDamagesSpell(spell:SpellWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
+			var targeterTeam:String = Api.fight.getFighterInformations(targetInfos.contextualId).team;
+			var targetTeam:String = Api.fight.getFighterInformations(Api.fight.getCurrentPlayedFighterId()).team;
+			
+			var isTargetMe:Boolean = (targetInfos.contextualId == Api.fight.getCurrentPlayedFighterId());
+			var isTargetInMyTeam:Boolean = (targeterTeam == targetTeam);
+			var isTargetAnInvocation:Boolean = targetInfos.stats.summoned;
+			
 			var effect:EffectInstance;
 			
 			var damageLine:Range;
@@ -59,6 +67,9 @@ package utils
 			for (var ii:int = 0; ii < spell.effects.length; ii++)
 			{
 				effect = spell.effects[ii];
+				
+				if (!isTargetAffected(effect.targetMask, isTargetInMyTeam, isTargetAnInvocation, isTargetMe))
+					continue;
 				
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1));
 				
@@ -75,6 +86,9 @@ package utils
 			for (ii = 0; ii < spell.criticalEffect.length; ii++)
 			{
 				effect = spell.criticalEffect[ii];
+				
+				if (!isTargetAffected(effect.targetMask, isTargetInMyTeam, isTargetAnInvocation, isTargetMe))
+					continue;
 				
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), true);
 				
@@ -137,6 +151,72 @@ package utils
 			}
 			
 			return new Damage(damage, damageCC, isWeaponZone ? distance % 2 : 0);
+		}
+		
+		/**
+		 * Test if the target is affected by an effect with targetMask.
+		 * 
+		 * @param	targetMask
+		 * @param	isTargetInMyTeam
+		 * @param	isTargetAnInvocation
+		 * @return
+		 */
+		private static function isTargetAffected(targetMask:String, isTargetInMyTeam:Boolean, isTargetAnInvocation:Boolean, isTargetMe:Boolean):Boolean
+		{
+			var masks:Array = targetMask.split(",");
+			
+			for each(var mask:String in masks)
+			{
+				switch(mask)
+				{
+					case TargetMaskEnum.CASTER:
+					case TargetMaskEnum.CASTER_INCLUDED:
+						if (isTargetMe)
+							return true;
+						
+						break;
+					case TargetMaskEnum.INVOCATION:
+					case TargetMaskEnum.STATIC_INVOCATION:
+						if (isTargetAnInvocation && isTargetInMyTeam)
+							return true;
+						
+						break;
+					case TargetMaskEnum.INVOCATION_ENEMY:
+					case TargetMaskEnum.STATIC_INVOCATION_ENEMY:
+						if (isTargetAnInvocation && !isTargetInMyTeam)
+							return true;
+						
+						break;
+					case TargetMaskEnum.PLAYER:
+					case TargetMaskEnum.MONSTER:
+						if (!isTargetAnInvocation && isTargetInMyTeam && !isTargetMe)
+							return true;
+						
+						break;
+					case TargetMaskEnum.PLAYER_ENEMY:
+					case TargetMaskEnum.MONSTER_ENEMY:
+						if (!isTargetAnInvocation && !isTargetInMyTeam)
+							return true;
+						
+						break;
+					case TargetMaskEnum.ALL:
+						if (isTargetInMyTeam)
+							return true;
+						
+						break;
+					case TargetMaskEnum.ALL_ENEMY:
+						if (!isTargetInMyTeam)
+							return true;
+						
+						break;
+					default:
+						Api.system.log(2, "Unknow mask : " + mask);
+						
+						return true;
+				}
+			}
+			
+			return false;
 		}
 		
 		/**
