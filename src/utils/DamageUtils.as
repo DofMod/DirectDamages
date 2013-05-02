@@ -31,11 +31,11 @@ package utils
 		{
 			if (spell is SpellWrapper)
 			{
-				return computeDamagesSpell(spell as SpellWrapper, targetInfos, distance);
+				return computeDamagesSpell(spell as SpellWrapper, targetInfos, distance % 5);
 			}
 			else if (spell is WeaponWrapper)
 			{
-				return computeDamagesWeapon(spell as WeaponWrapper, targetInfos, distance);
+				return computeDamagesWeapon(spell as WeaponWrapper, targetInfos, distance % 2);
 			}
 			
 			return new Damage(new Range(), new Range());
@@ -152,7 +152,7 @@ package utils
 				damageCC.max += damageLine.max;
 			}
 			
-			return new Damage(damage, damageCC, isWeaponZone ? distance % 2 : 0);
+			return new Damage(damage, damageCC, isWeaponZone ? distance : 0);
 		}
 		
 		/**
