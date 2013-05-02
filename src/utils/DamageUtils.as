@@ -7,6 +7,7 @@ package utils
 	import d2network.CharacterCharacteristicsInformations;
 	import d2network.GameFightFighterInformations;
 	import d2network.GameFightMinimalStats;
+	import enum.BuffEffectCategoryEnum;
 	import enum.EffectIdEnum;
 	import enum.ItemTypeIdEnum;
 	import enum.TargetMaskEnum;
@@ -115,6 +116,7 @@ package utils
 		private static function computeDamagesWeapon(weapon:WeaponWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
 			var isWeaponZone:Boolean = isWeaponZone(weapon.typeId);
+			var skillBonus:int = getSkillBonus();
 			
 			var effect:EffectInstance;
 			
@@ -125,7 +127,7 @@ package utils
 			// Simple damages
 			for each (effect in weapon.effects)
 			{
-				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, 0);
+				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, skillBonus);
 				
 				if (isWeaponZone && distance % 2 == 1)
 					damageLine = applyBonus(damageLine, 0.75);
@@ -139,7 +141,7 @@ package utils
 			// Critical damages
 			for each (effect in weapon.effects)
 			{
-				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, 0);
+				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, skillBonus);
 				
 				if (isWeaponZone && distance % 2 == 1)
 					damageLine = applyBonus(damageLine, 0.75);
@@ -248,8 +250,8 @@ package utils
 					
 					var waterDamage:int = allDamage + characterStats.waterDamageBonus.objectsAndMountBonus + characterStats.waterDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((chance + allDamagePercent) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((chance + allDamagePercent) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(damageMin * (1 + ((chance + allDamagePercent + skillBonus) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(damageMax * (1 + ((chance + allDamagePercent + skillBonus) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 				case EffectIdEnum.EARTH_THEFT:
@@ -259,8 +261,8 @@ package utils
 					
 					var earthDamage:int = allDamage + characterStats.earthDamageBonus.objectsAndMountBonus + characterStats.earthDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(damageMin * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(damageMax * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 				case EffectIdEnum.AIR_THEFT:
@@ -270,8 +272,8 @@ package utils
 					
 					var airDamage:int = allDamage + characterStats.airDamageBonus.objectsAndMountBonus + characterStats.airDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((agility + allDamagePercent) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((agility + allDamagePercent) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(damageMin * (1 + ((agility + allDamagePercent + skillBonus) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(damageMax * (1 + ((agility + allDamagePercent + skillBonus) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 				case EffectIdEnum.FIRE_THEFT:
@@ -281,8 +283,8 @@ package utils
 					
 					var fireDamage:int = allDamage + characterStats.fireDamageBonus.objectsAndMountBonus + characterStats.fireDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((intelligence + allDamagePercent) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((intelligence + allDamagePercent) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(damageMin * (1 + ((intelligence + allDamagePercent + skillBonus) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(damageMax * (1 + ((intelligence + allDamagePercent + skillBonus) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 				case EffectIdEnum.NEUTRAL_THEFT:
@@ -292,8 +294,8 @@ package utils
 					
 					var neutralDamage:int = allDamage + characterStats.neutralDamageBonus.objectsAndMountBonus + characterStats.neutralDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(Math.floor(damageMin * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(Math.floor(damageMax * (1 + (skillBonus / 100))) * (1 + ((strength + allDamagePercent) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =             Math.floor(damageMin * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0);
+					damage.max = damageMax ? Math.floor(damageMax * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
 			}
@@ -343,6 +345,24 @@ package utils
 		private static function applyBonus(damage:Range, bonusCoeff:Number):Range
 		{
 			return damage.applyCoeff(bonusCoeff);
+		}
+		
+		/**
+		 * Return the power of the skill bonus is present
+		 * 
+		 * @return
+		 */
+		private static function getSkillBonus():int
+		{
+			for each(var buff:Object in Api.fight.getAllBuffEffects(Api.fight.getCurrentPlayedFighterId()).buffArray[BuffEffectCategoryEnum.ACTIVE_BONUS])
+			{
+				if (buff.effects.effectId == EffectIdEnum.POWER_WEAPON)
+				{
+					return buff.effects.parameter0;
+				}
+			}
+			
+			return 0;
 		}
 		
 		/**
