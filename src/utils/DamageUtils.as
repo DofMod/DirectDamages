@@ -58,9 +58,9 @@ package utils
 			var isTargetInMyTeam:Boolean = (targeterTeam == targetTeam);
 			var isTargetAnInvocation:Boolean = targetInfos.stats.summoned;
 			
-			var effect:EffectInstance;
+			var effect:EffectInstance = null;
 			
-			var damageLine:Range;
+			var damageLine:Range = null;
 			var damage:Range = new Range();
 			var damageCC:Range = new Range();
 			
@@ -73,6 +73,8 @@ package utils
 					continue;
 				
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1));
+				if (damageLine == null)
+					continue;
 				
 				if (distance != 0 && isSpellZone(spell.spellZoneEffects, ii))
 					damageLine = applyBonus(damageLine, 1.0 - 0.1 * distance);
@@ -92,6 +94,8 @@ package utils
 					continue;
 				
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), true);
+				if (damageLine == null)
+					continue;
 				
 				if (distance != 0 && isSpellZone(spell.spellZoneEffects, ii))
 					damageLine = applyBonus(damageLine, 1.0 - 0.1 * distance);
@@ -128,6 +132,8 @@ package utils
 			for each (effect in weapon.effects)
 			{
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, skillBonus);
+				if (damageLine == null)
+					continue;
 				
 				if (isWeaponZone && distance % 2 == 1)
 					damageLine = applyBonus(damageLine, 0.75);
@@ -142,6 +148,8 @@ package utils
 			for each (effect in weapon.effects)
 			{
 				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, skillBonus);
+				if (damageLine == null)
+					continue;
 				
 				if (isWeaponZone && distance % 2 == 1)
 					damageLine = applyBonus(damageLine, 0.75);
@@ -298,6 +306,9 @@ package utils
 					damage.max = damageMax ? Math.floor(damageMax * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
 					
 					break;
+					
+				default:
+					return null;
 			}
 			
 			return damage;
@@ -409,6 +420,16 @@ package utils
 					
 					break;
 				default:
+			}
+			
+			if (damage.max < 0)
+			{
+				damage.max = 0;
+			}
+			
+			if (damage.min < 0)
+			{
+				damage.min = 0;
 			}
 			
 			return damage;
