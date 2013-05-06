@@ -161,7 +161,7 @@ package ui.abstract
 		 */
 		protected function displayDamage(damage:Damage, monsterLife:int):void
 		{
-			if (damage.min == 0 && damage.max == 0 && damage.minCC == 0 && damage.maxCC == 0)
+			if (damage.min == 0 && damage.max == 0 && damage.minCritical == 0 && damage.maxCritical == 0)
 				return;
 			
 			if (damage.distance > 0)
@@ -176,13 +176,13 @@ package ui.abstract
 			lbl_info.appendText(((monsterLife - damage.max) > 0) ? damage.max.toString() : "mort", "shield");
 			lbl_info.appendText(" (", "p");
 			
-			if (damage.minCC != damage.maxCC && (monsterLife - damage.minCC) > 0)
+			if (damage.minCritical != damage.maxCritical && (monsterLife - damage.minCritical) > 0)
 			{
-				lbl_info.appendText(damage.minCC.toString(), "p");
+				lbl_info.appendText(damage.minCritical.toString(), "p");
 				lbl_info.appendText(" à ", "p");
 			}
 			
-			lbl_info.appendText(((monsterLife - damage.maxCC) > 0) ? damage.maxCC.toString() : "mort", "etheral");
+			lbl_info.appendText(((monsterLife - damage.maxCritical) > 0) ? damage.maxCritical.toString() : "mort", "etheral");
 			lbl_info.appendText(")", "p");
 		}
 		

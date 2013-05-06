@@ -8,35 +8,35 @@ package types
 	 */
 	public class Damage
 	{
-		private var _damage:Range;
-		private var _damageCC:Range;
+		private var _damageNormal:Range;
+		private var _damageCritical:Range;
 		private var _distance:int;
 		
-		public function Damage(damage:Range, damageCC:Range, distance:int = 0)
+		public function Damage(damageNormal:Range, damageCritical:Range, distance:int = 0)
 		{
-			_damage = damage;
-			_damageCC = damageCC;
+			_damageNormal = damageNormal;
+			_damageCritical = damageCritical;
 			_distance = distance;
 		}
 		
 		public function get min():int
 		{
-			return _damage.min;
+			return _damageNormal.min;
 		}
 		
-		public function get max():int 
+		public function get max():int
 		{
-			return _damage.max;
+			return _damageNormal.max;
 		}
 		
-		public function get minCC():int 
+		public function get minCritical():int
 		{
-			return _damageCC.min;
+			return _damageCritical.min;
 		}
 		
-		public function get maxCC():int 
+		public function get maxCritical():int
 		{
-			return _damageCC.max;
+			return _damageCritical.max;
 		}
 		
 		public function get distance():int
