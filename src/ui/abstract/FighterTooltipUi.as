@@ -161,7 +161,7 @@ package ui.abstract
 		 */
 		protected function displayDamage(damage:Damage, monsterLife:int):void
 		{
-			if (damage.min == 0 && damage.max == 0 && damage.minCritical == 0 && damage.maxCritical == 0)
+			if (damage == null)
 				return;
 			
 			if (damage.isInvulnerable())

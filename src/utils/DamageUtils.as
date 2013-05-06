@@ -42,7 +42,7 @@ package utils
 				return computeDamagesWeapon(spell as WeaponWrapper, targetInfos, distance % 2);
 			}
 			
-			return new Damage(new Range(), new Range());
+			return null;
 		}
 		
 		/**
@@ -68,6 +68,8 @@ package utils
 			var damageNormal:Range = new Range();
 			var damageCritical:Range = new Range();
 			
+			var doDamage:Boolean = false;
+			
 			// Simple damages
 			for (var ii:int = 0; ii < spell.effects.length; ii++)
 			{
@@ -87,6 +89,8 @@ package utils
 				
 				damageNormal.min += damageEffect.min;
 				damageNormal.max += damageEffect.max;
+				
+				doDamage = true;
 			}
 			
 			// Critical damages
@@ -108,7 +112,12 @@ package utils
 				
 				damageCritical.min += damageEffect.min;
 				damageCritical.max += damageEffect.max;
+				
+				doDamage = true;
 			}
+			
+			if (doDamage == false)
+				return null;
 			
 			return new Damage(damageNormal, damageCritical, distance);
 		}
