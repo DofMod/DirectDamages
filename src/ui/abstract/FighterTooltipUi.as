@@ -164,6 +164,13 @@ package ui.abstract
 			if (damage.min == 0 && damage.max == 0 && damage.minCritical == 0 && damage.maxCritical == 0)
 				return;
 			
+			if (damage.isInvulnerable())
+			{
+				lbl_info.appendText("Invulnérable", "etheral");
+				
+				return;
+			}
+			
 			if (damage.distance > 0)
 				lbl_info.appendText(damage.distance + ": ", "itemset");
 			

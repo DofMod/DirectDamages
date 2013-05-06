@@ -21,5 +21,6 @@ package enum
 		public static const NEUTRAL_THEFT:int = 95; // ??
 		public static const NEUTRAL:int = 100;
 		public static const POWER_WEAPON:int = 1144; // Skill bonus
+		public static const INVULNERABILITY:int = 950;
 	}
 }

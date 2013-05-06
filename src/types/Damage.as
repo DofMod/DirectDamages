@@ -11,12 +11,14 @@ package types
 		private var _damageNormal:Range;
 		private var _damageCritical:Range;
 		private var _distance:int;
+		private var _invulnerability:Boolean;
 		
-		public function Damage(damageNormal:Range, damageCritical:Range, distance:int = 0)
+		public function Damage(damageNormal:Range, damageCritical:Range, distance:int = 0, invulnerability:Boolean = false)
 		{
 			_damageNormal = damageNormal;
 			_damageCritical = damageCritical;
 			_distance = distance;
+			_invulnerability = invulnerability;
 		}
 		
 		public function get min():int
@@ -42,6 +44,11 @@ package types
 		public function get distance():int
 		{
 			return _distance;
+		}
+		
+		public function isInvulnerable():Boolean
+		{
+			return _invulnerability;
 		}
 	}
 }

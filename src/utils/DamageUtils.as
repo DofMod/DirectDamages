@@ -29,6 +29,10 @@ package utils
 		 */
 		public static function computeDamages(spell:Object, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
+			if (isInvulnerable(targetInfos.contextualId))
+			{
+				return new Damage(new Range(), new Range(), 0, true);
+			}
 			if (spell is SpellWrapper)
 			{
 				return computeDamagesSpell(spell as SpellWrapper, targetInfos, distance % 5);
@@ -374,6 +378,25 @@ package utils
 			}
 			
 			return 0;
+		}
+		
+		/**
+		 * Return if the target is invulnerable.
+		 * 
+		 * @param	targetId Id of the target.
+		 * @return
+		 */
+		private static function isInvulnerable(targetId:int):Boolean
+		{
+			for each(var buff:Object in Api.fight.getAllBuffEffects(targetId).buffArray[BuffEffectCategoryEnum.STATES])
+			{
+				if (buff.effects.effectId == EffectIdEnum.INVULNERABILITY)
+				{
+					return true;
+				}
+			}
+			
+			return false;
 		}
 		
 		/**
