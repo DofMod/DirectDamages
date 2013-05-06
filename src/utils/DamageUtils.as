@@ -62,7 +62,7 @@ package utils
 			
 			var damageLine:Range = null;
 			var damage:Range = new Range();
-			var damageCC:Range = new Range();
+			var damageCritical:Range = new Range();
 			
 			// Simple damages
 			for (var ii:int = 0; ii < spell.effects.length; ii++)
@@ -102,11 +102,11 @@ package utils
 				
 				damageLine = applyReductions(effect, damageLine, targetInfos.stats, true);
 				
-				damageCC.min += damageLine.min;
-				damageCC.max += damageLine.max;
+				damageCritical.min += damageLine.min;
+				damageCritical.max += damageLine.max;
 			}
 			
-			return new Damage(damage, damageCC, distance);
+			return new Damage(damage, damageCritical, distance);
 		}
 		
 		/**
@@ -126,7 +126,7 @@ package utils
 			
 			var damageLine:Range;
 			var damage:Range = new Range();
-			var damageCC:Range = new Range();
+			var damageCritical:Range = new Range();
 			
 			// Simple damages
 			for each (effect in weapon.effects)
@@ -156,11 +156,11 @@ package utils
 				
 				damageLine = applyReductions(effect, damageLine, targetInfos.stats);
 				
-				damageCC.min += damageLine.min;
-				damageCC.max += damageLine.max;
+				damageCritical.min += damageLine.min;
+				damageCritical.max += damageLine.max;
 			}
 			
-			return new Damage(damage, damageCC, isWeaponZone ? distance : 0);
+			return new Damage(damage, damageCritical, isWeaponZone ? distance : 0);
 		}
 		
 		/**
