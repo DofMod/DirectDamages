@@ -60,8 +60,8 @@ package utils
 			
 			var effect:EffectInstance = null;
 			
-			var damageLine:Range = null;
-			var damage:Range = new Range();
+			var damageEffect:Range = null;
+			var damageNormal:Range = new Range();
 			var damageCritical:Range = new Range();
 			
 			// Simple damages
@@ -72,17 +72,17 @@ package utils
 				if (!isTargetAffected(effect.targetMask, isTargetInMyTeam, isTargetAnInvocation, isTargetMe))
 					continue;
 				
-				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1));
-				if (damageLine == null)
+				damageEffect = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1));
+				if (damageEffect == null)
 					continue;
 				
 				if (distance != 0 && isSpellZone(spell.spellZoneEffects, ii))
-					damageLine = applyBonus(damageLine, 1.0 - 0.1 * distance);
+					damageEffect = applyBonus(damageEffect, 1.0 - 0.1 * distance);
 				
-				damageLine = applyReductions(effect, damageLine, targetInfos.stats);
+				damageEffect = applyReductions(effect, damageEffect, targetInfos.stats);
 				
-				damage.min += damageLine.min;
-				damage.max += damageLine.max;
+				damageNormal.min += damageEffect.min;
+				damageNormal.max += damageEffect.max;
 			}
 			
 			// Critical damages
@@ -93,20 +93,20 @@ package utils
 				if (!isTargetAffected(effect.targetMask, isTargetInMyTeam, isTargetAnInvocation, isTargetMe))
 					continue;
 				
-				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), true);
-				if (damageLine == null)
+				damageEffect = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), true);
+				if (damageEffect == null)
 					continue;
 				
 				if (distance != 0 && isSpellZone(spell.spellZoneEffects, ii))
-					damageLine = applyBonus(damageLine, 1.0 - 0.1 * distance);
+					damageEffect = applyBonus(damageEffect, 1.0 - 0.1 * distance);
 				
-				damageLine = applyReductions(effect, damageLine, targetInfos.stats, true);
+				damageEffect = applyReductions(effect, damageEffect, targetInfos.stats, true);
 				
-				damageCritical.min += damageLine.min;
-				damageCritical.max += damageLine.max;
+				damageCritical.min += damageEffect.min;
+				damageCritical.max += damageEffect.max;
 			}
 			
-			return new Damage(damage, damageCritical, distance);
+			return new Damage(damageNormal, damageCritical, distance);
 		}
 		
 		/**
@@ -124,43 +124,43 @@ package utils
 			
 			var effect:EffectInstance;
 			
-			var damageLine:Range;
-			var damage:Range = new Range();
+			var damageEffect:Range;
+			var damageNormal:Range = new Range();
 			var damageCritical:Range = new Range();
 			
 			// Simple damages
 			for each (effect in weapon.effects)
 			{
-				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, skillBonus);
-				if (damageLine == null)
+				damageEffect = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, skillBonus);
+				if (damageEffect == null)
 					continue;
 				
 				if (isWeaponZone && distance % 2 == 1)
-					damageLine = applyBonus(damageLine, 0.75);
+					damageEffect = applyBonus(damageEffect, 0.75);
 				
-				damageLine = applyReductions(effect, damageLine, targetInfos.stats);
+				damageEffect = applyReductions(effect, damageEffect, targetInfos.stats);
 				
-				damage.min += damageLine.min;
-				damage.max += damageLine.max;
+				damageNormal.min += damageEffect.min;
+				damageNormal.max += damageEffect.max;
 			}
 			
 			// Critical damages
 			for each (effect in weapon.effects)
 			{
-				damageLine = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, skillBonus);
-				if (damageLine == null)
+				damageEffect = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, skillBonus);
+				if (damageEffect == null)
 					continue;
 				
 				if (isWeaponZone && distance % 2 == 1)
-					damageLine = applyBonus(damageLine, 0.75);
+					damageEffect = applyBonus(damageEffect, 0.75);
 				
-				damageLine = applyReductions(effect, damageLine, targetInfos.stats);
+				damageEffect = applyReductions(effect, damageEffect, targetInfos.stats);
 				
-				damageCritical.min += damageLine.min;
-				damageCritical.max += damageLine.max;
+				damageCritical.min += damageEffect.min;
+				damageCritical.max += damageEffect.max;
 			}
 			
-			return new Damage(damage, damageCritical, isWeaponZone ? distance : 0);
+			return new Damage(damageNormal, damageCritical, isWeaponZone ? distance : 0);
 		}
 		
 		/**
