@@ -397,15 +397,24 @@ package utils
 		 */
 		private static function isInvulnerable(targetId:int):Boolean
 		{
+			var invulnerable:Boolean = false;
+			
 			for each(var buff:Object in Api.fight.getAllBuffEffects(targetId).buffArray[BuffEffectCategoryEnum.STATES])
 			{
-				if (buff.effects.effectId == EffectIdEnum.INVULNERABILITY)
+				Api.system.log(2, "param0: " + buff.effects.parameter0);
+				
+				if (buff.effects.effectId == EffectIdEnum.STATE_DISABLE && buff.effects.parameter0 == EffectIdEnum.STATE_INVULNERABLE)
 				{
 					return true;
 				}
+				
+				if (buff.effects.effectId == EffectIdEnum.STATE_APPLY && buff.effects.parameter0 == EffectIdEnum.STATE_INVULNERABLE)
+				{
+					invulnerable = false;
+				}
 			}
 			
-			return false;
+			return invulnerable;
 		}
 		
 		/**
