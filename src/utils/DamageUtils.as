@@ -22,10 +22,10 @@ package utils
 	{
 		/**
 		 * 
-		 * @param	spell
-		 * @param	targetInfos
-		 * @param	distance
-		 * @return
+		 * @param	spell		Spell informations (SpellWrapper or WeaponWrapper).
+		 * @param	targetInfos	Target informations (characteristics, ...).
+		 * @param	distance	Distance between the targeted point and the target.
+		 * @return	A Damage object and Null if error.
 		 */
 		public static function computeDamages(spell:Object, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
@@ -48,10 +48,10 @@ package utils
 		/**
 		 * Compute initial damage (for spells).
 		 * 
-		 * @param	spell
-		 * @param	targetInfos
-		 * @param	distance
-		 * @return
+		 * @param	spell		Spell informations.
+		 * @param	targetInfos	Target informations (characteristics, ...).
+		 * @param	distance	Distance between the targeted point and the target.
+		 * @return	A Damage object and Null if error.
 		 */
 		private static function computeDamagesSpell(spell:SpellWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
@@ -125,10 +125,10 @@ package utils
 		/**
 		 * Compute initial damages (for weapons).
 		 * 
-		 * @param	weapon
-		 * @param	targetInfos
-		 * @param	distance
-		 * @return
+		 * @param	weapon		Weapon informations.
+		 * @param	targetInfos	Target informations (characteristics, ...).
+		 * @param	distance	Distance between the targeted point and the target.
+		 * @return	A Damage object and Null if error.
 		 */
 		private static function computeDamagesWeapon(weapon:WeaponWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
@@ -182,7 +182,8 @@ package utils
 		 * @param	targetMask
 		 * @param	isTargetInMyTeam
 		 * @param	isTargetAnInvocation
-		 * @return
+		 * @param	isTargetMe
+		 * @return	Is or not the target affected by the effect.
 		 */
 		private static function isTargetAffected(targetMask:String, isTargetInMyTeam:Boolean, isTargetAnInvocation:Boolean, isTargetMe:Boolean):Boolean
 		{
@@ -250,7 +251,7 @@ package utils
 		 * @param	damageMax	Maximal damage.
 		 * @param	isCriticalDamage	Is a critical hit ?
 		 * @param	skillBonus	Bonus of the skill in percent.
-		 * @return	The damage that whill be deal by that effect.
+		 * @return	The damage that will be deal by that effect.
 		 */
 		private static function computeInitialDamage(damageType:int, damageMin:int, damageMax:int, isCriticalDamage:Boolean = false, skillBonus:Number = 0):Range
 		{
@@ -372,7 +373,7 @@ package utils
 		}
 		
 		/**
-		 * Return the power of the skill bonus is present
+		 * Return the power of the skill bonus (if present).
 		 * 
 		 * @return
 		 */
@@ -393,7 +394,7 @@ package utils
 		 * Return if the target is invulnerable.
 		 * 
 		 * @param	targetId Id of the target.
-		 * @return
+		 * @return	Is the target invulnerable.
 		 */
 		private static function isInvulnerable(targetId:int):Boolean
 		{
