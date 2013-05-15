@@ -346,14 +346,14 @@ package utils
 		}
 		
 		/**
-		 * Test if the weapon is a hammer or a staff.
+		 * Test if the weapon is a hammer or a staff or a shovel.
 		 * 
 		 * @param	weaponTypeId	TypeId of the weapon.
-		 * @return	True if the weapon is a hammer or a staff.
+		 * @return	True if the weapon is a hammer or a staff or a shovel.
 		 */
 		private static function isWeaponZone(weaponTypeId:int):Boolean
 		{
-			if (weaponTypeId == ItemTypeIdEnum.HAMMER || weaponTypeId == ItemTypeIdEnum.STAFF || weaponTypeId == ItemTypeIdEnum.SHOVEL || weaponTypeId == ItemTypeIdEnum.AXE)
+			if (weaponTypeId == ItemTypeIdEnum.HAMMER || weaponTypeId == ItemTypeIdEnum.STAFF || weaponTypeId == ItemTypeIdEnum.SHOVEL)
 				return true;
 				
 			return false;
