@@ -55,6 +55,8 @@ package utils
 		 */
 		private static function computeDamagesSpell(spell:SpellWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
+			var characterStats:CharacterCharacteristicsInformations = Api.fight.getCurrentPlayedCharacteristicsInformations();
+			
 			var targeterTeam:String = Api.fight.getFighterInformations(targetInfos.contextualId).team;
 			var targetTeam:String = Api.fight.getFighterInformations(Api.fight.getCurrentPlayedFighterId()).team;
 			
@@ -78,7 +80,7 @@ package utils
 				if (!isTargetAffected(effect.targetMask, isTargetInMyTeam, isTargetAnInvocation, isTargetMe))
 					continue;
 				
-				damageEffect = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1));
+				damageEffect = computeInitialDamage(effect, characterStats);
 				if (damageEffect == null)
 					continue;
 				
@@ -101,7 +103,7 @@ package utils
 				if (!isTargetAffected(effect.targetMask, isTargetInMyTeam, isTargetAnInvocation, isTargetMe))
 					continue;
 				
-				damageEffect = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), true);
+				damageEffect = computeInitialDamage(effect, characterStats, true);
 				if (damageEffect == null)
 					continue;
 				
@@ -133,6 +135,7 @@ package utils
 		private static function computeDamagesWeapon(weapon:WeaponWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
 		{
 			var isWeaponZone:Boolean = isWeaponZone(weapon.typeId);
+			var characterStats:CharacterCharacteristicsInformations = Api.fight.getCurrentPlayedCharacteristicsInformations();
 			var skillBonus:int = getSkillBonus();
 			
 			var effect:EffectInstance;
@@ -144,7 +147,7 @@ package utils
 			// Simple damages
 			for each (effect in weapon.effects)
 			{
-				damageEffect = computeInitialDamage(effect.effectId, int(effect.parameter0), int(effect.parameter1), false, skillBonus);
+				damageEffect = computeInitialDamage(effect, characterStats, false, 0, skillBonus);
 				if (damageEffect == null)
 					continue;
 				
@@ -160,7 +163,7 @@ package utils
 			// Critical damages
 			for each (effect in weapon.effects)
 			{
-				damageEffect = computeInitialDamage(effect.effectId, int(effect.parameter0) + weapon.criticalHitBonus, effect.parameter1 ? int(effect.parameter1) + weapon.criticalHitBonus : 0, true, skillBonus);
+				damageEffect = computeInitialDamage(effect, characterStats, true, weapon.criticalHitBonus, skillBonus);
 				if (damageEffect == null)
 					continue;
 				
@@ -246,24 +249,22 @@ package utils
 		/**
 		 * Compute the damage of an effect.
 		 * 
-		 * @param	damageType	Type index of the effect.
-		 * @param	damageMin	Minimal damage.
-		 * @param	damageMax	Maximal damage.
+		 * @param	effect				The effect to compute.
+		 * @param	characterStats		Target stats informations.
 		 * @param	isCriticalDamage	Is a critical hit ?
-		 * @param	skillBonus	Bonus of the skill in percent.
+		 * @param	criticalBonus		Bonus to initial damages (for weapons).
+		 * @param	skillBonus			Bonus of the skill in percent.
 		 * @return	The damage that will be deal by that effect.
 		 */
-		private static function computeInitialDamage(damageType:int, damageMin:int, damageMax:int, isCriticalDamage:Boolean = false, skillBonus:Number = 0):Range
+		private static function computeInitialDamage(effect:EffectInstance, characterStats:CharacterCharacteristicsInformations, isCriticalDamage:Boolean = false, criticalBonus:int = 0, skillBonus:int = 0):Range
 		{
-			var characterStats:CharacterCharacteristicsInformations = Api.fight.getCurrentPlayedCharacteristicsInformations();
-			
-			var allDamagePercent:int = characterStats.damagesBonusPercent.objectsAndMountBonus + characterStats.damagesBonusPercent.contextModif;
-			var criticalDamage:int = characterStats.criticalDamageBonus.objectsAndMountBonus + characterStats.criticalDamageBonus.contextModif;
 			var allDamage:int = characterStats.allDamagesBonus.objectsAndMountBonus + characterStats.allDamagesBonus.contextModif;
+			var allDamagePercent:int = characterStats.damagesBonusPercent.objectsAndMountBonus + characterStats.damagesBonusPercent.contextModif;
+			var criticalDamage:int = (isCriticalDamage) ? characterStats.criticalDamageBonus.objectsAndMountBonus + characterStats.criticalDamageBonus.contextModif : 0;
 			
 			var damage:Range = new Range();
 			
-			switch (damageType) 
+			switch (effect.effectId)
 			{
 				case EffectIdEnum.WATER_THEFT:
 				case EffectIdEnum.WATER:
@@ -272,10 +273,11 @@ package utils
 					
 					var waterDamage:int = allDamage + characterStats.waterDamageBonus.objectsAndMountBonus + characterStats.waterDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(damageMin * (1 + ((chance + allDamagePercent + skillBonus) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(damageMax * (1 + ((chance + allDamagePercent + skillBonus) / 100))) + waterDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =                     Math.floor((effect.parameter0 + criticalBonus) * (1 + ((chance + allDamagePercent + skillBonus) / 100))) + waterDamage + criticalDamage;
+					damage.max = effect.parameter1 ? Math.floor((effect.parameter1 + criticalBonus) * (1 + ((chance + allDamagePercent + skillBonus) / 100))) + waterDamage + criticalDamage : damage.min;
 					
 					break;
+					
 				case EffectIdEnum.EARTH_THEFT:
 				case EffectIdEnum.EARTH:
 					var strength:int = characterStats.strength.base + characterStats.strength.objectsAndMountBonus + characterStats.strength.contextModif;
@@ -283,10 +285,11 @@ package utils
 					
 					var earthDamage:int = allDamage + characterStats.earthDamageBonus.objectsAndMountBonus + characterStats.earthDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(damageMin * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(damageMax * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + earthDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =                     Math.floor((effect.parameter0 + criticalBonus) * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + earthDamage + criticalDamage;
+					damage.max = effect.parameter1 ? Math.floor((effect.parameter1 + criticalBonus) * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + earthDamage + criticalDamage : damage.min;
 					
 					break;
+					
 				case EffectIdEnum.AIR_THEFT:
 				case EffectIdEnum.AIR:
 					var agility:int = characterStats.agility.base + characterStats.agility.objectsAndMountBonus + characterStats.agility.contextModif;
@@ -294,10 +297,11 @@ package utils
 					
 					var airDamage:int = allDamage + characterStats.airDamageBonus.objectsAndMountBonus + characterStats.airDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(damageMin * (1 + ((agility + allDamagePercent + skillBonus) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(damageMax * (1 + ((agility + allDamagePercent + skillBonus) / 100))) + airDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =                     Math.floor((effect.parameter0 + criticalBonus) * (1 + ((agility + allDamagePercent + skillBonus) / 100))) + airDamage + criticalDamage;
+					damage.max = effect.parameter1 ? Math.floor((effect.parameter1 + criticalBonus) * (1 + ((agility + allDamagePercent + skillBonus) / 100))) + airDamage + criticalDamage : damage.min;
 					
 					break;
+					
 				case EffectIdEnum.FIRE_THEFT:
 				case EffectIdEnum.FIRE:
 					var intelligence:int = characterStats.intelligence.base + characterStats.intelligence.objectsAndMountBonus + characterStats.intelligence.contextModif;
@@ -305,10 +309,11 @@ package utils
 					
 					var fireDamage:int = allDamage + characterStats.fireDamageBonus.objectsAndMountBonus + characterStats.fireDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(damageMin * (1 + ((intelligence + allDamagePercent + skillBonus) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(damageMax * (1 + ((intelligence + allDamagePercent + skillBonus) / 100))) + fireDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =                     Math.floor((effect.parameter0 + criticalBonus) * (1 + ((intelligence + allDamagePercent + skillBonus) / 100))) + fireDamage + criticalDamage;
+					damage.max = effect.parameter1 ? Math.floor((effect.parameter1 + criticalBonus) * (1 + ((intelligence + allDamagePercent + skillBonus) / 100))) + fireDamage + criticalDamage : damage.min;
 					
 					break;
+					
 				case EffectIdEnum.NEUTRAL_THEFT:
 				case EffectIdEnum.NEUTRAL:
 					strength = characterStats.strength.base     + characterStats.strength.objectsAndMountBonus     + characterStats.strength.contextModif;
@@ -316,8 +321,8 @@ package utils
 					
 					var neutralDamage:int = allDamage + characterStats.neutralDamageBonus.objectsAndMountBonus + characterStats.neutralDamageBonus.contextModif;
 					
-					damage.min =             Math.floor(damageMin * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0);
-					damage.max = damageMax ? Math.floor(damageMax * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + neutralDamage + (isCriticalDamage ? criticalDamage : 0) : damage.min;
+					damage.min =                     Math.floor((effect.parameter0 + criticalBonus) * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + neutralDamage + criticalDamage;
+					damage.max = effect.parameter1 ? Math.floor((effect.parameter1 + criticalBonus) * (1 + ((strength + allDamagePercent + skillBonus) / 100))) + neutralDamage + criticalDamage : damage.min;
 					
 					break;
 					
