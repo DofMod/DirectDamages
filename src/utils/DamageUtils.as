@@ -407,8 +407,6 @@ package utils
 			
 			for each(var buff:Object in Api.fight.getAllBuffEffects(targetId).buffArray[BuffEffectCategoryEnum.STATES])
 			{
-				Api.system.log(2, "param0: " + buff.effects.parameter0);
-				
 				if (buff.effects.effectId == EffectIdEnum.STATE_DISABLE && buff.effects.parameter0 == EffectIdEnum.STATE_INVULNERABLE)
 				{
 					return true;
