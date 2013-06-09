@@ -326,6 +326,19 @@ package utils
 					
 					break;
 					
+				case EffectIdEnum.ERODED_HP_PERCENT:
+					
+					break;
+					
+				case EffectIdEnum.PUSHBACK:
+					var characterLvl:int = Api.fight.getFighterLevel(Api.fight.getCurrentPlayedFighterId());
+					var pushDamage:int = characterStats.pushDamageBonus.base + characterStats.pushDamageBonus.objectsAndMountBonus + characterStats.pushDamageBonus.contextModif;
+					
+					damage.min = 0;
+					damage.max = int(effect.parameter0) * (8 + Math.floor(8 * characterLvl / 50)) + pushDamage;
+					
+					break;
+					
 				default:
 					return null;
 			}
@@ -462,6 +475,11 @@ package utils
 				case EffectIdEnum.NEUTRAL:
 					damage.min = (1 - targetStats.neutralElementResistPercent / 100) * (damage.min - targetStats.neutralElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.neutralElementResistPercent / 100) * (damage.max - targetStats.neutralElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
+					
+					break;
+				case EffectIdEnum.PUSHBACK:
+					damage.min -= targetStats.pushDamageFixedResist;
+					damage.max -= targetStats.pushDamageFixedResist;
 					
 					break;
 				default:
