@@ -11,7 +11,7 @@ package utils
 	import enum.EffectIdEnum;
 	import enum.ItemTypeIdEnum;
 	import enum.TargetMaskEnum;
-	import types.Damage;
+	import types.Damages;
 	import types.Range;
 	
 	/**
@@ -27,11 +27,11 @@ package utils
 		 * @param	distance	Distance between the targeted point and the target.
 		 * @return	A Damage object and Null if error.
 		 */
-		public static function computeDamages(spell:Object, targetInfos:GameFightFighterInformations, distance:int):Damage
+		public static function computeDamages(spell:Object, targetInfos:GameFightFighterInformations, distance:int):Damages
 		{
 			if (isInvulnerable(targetInfos.contextualId))
 			{
-				return new Damage(new Range(), new Range(), 0, true);
+				return new Damages(new Range(), new Range(), 0, true);
 			}
 			if (spell is SpellWrapper)
 			{
@@ -53,7 +53,7 @@ package utils
 		 * @param	distance	Distance between the targeted point and the target.
 		 * @return	A Damage object and Null if error.
 		 */
-		private static function computeDamagesSpell(spell:SpellWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
+		private static function computeDamagesSpell(spell:SpellWrapper, targetInfos:GameFightFighterInformations, distance:int):Damages
 		{
 			var characterStats:CharacterCharacteristicsInformations = Api.fight.getCurrentPlayedCharacteristicsInformations();
 			
@@ -121,7 +121,7 @@ package utils
 			if (doDamage == false)
 				return null;
 			
-			return new Damage(damageNormal, damageCritical, distance);
+			return new Damages(damageNormal, damageCritical, distance);
 		}
 		
 		/**
@@ -132,7 +132,7 @@ package utils
 		 * @param	distance	Distance between the targeted point and the target.
 		 * @return	A Damage object and Null if error.
 		 */
-		private static function computeDamagesWeapon(weapon:WeaponWrapper, targetInfos:GameFightFighterInformations, distance:int):Damage
+		private static function computeDamagesWeapon(weapon:WeaponWrapper, targetInfos:GameFightFighterInformations, distance:int):Damages
 		{
 			var isWeaponZone:Boolean = isWeaponZone(weapon.typeId);
 			var characterStats:CharacterCharacteristicsInformations = Api.fight.getCurrentPlayedCharacteristicsInformations();
@@ -176,7 +176,7 @@ package utils
 				damageCritical.max += damageEffect.max;
 			}
 			
-			return new Damage(damageNormal, damageCritical, isWeaponZone ? distance : 0);
+			return new Damages(damageNormal, damageCritical, isWeaponZone ? distance : 0);
 		}
 		
 		/**
@@ -372,9 +372,9 @@ package utils
 		 * @param	bonusCoeff
 		 * @return
 		 */
-		private static function applyBonus(damage:Range, bonusCoeff:Number):Range
+		private static function applyBonus(damagesRange:Range, bonusCoeff:Number):Range
 		{
-			return damage.mult(bonusCoeff);
+			return damagesRange.mult(bonusCoeff);
 		}
 		
 		/**

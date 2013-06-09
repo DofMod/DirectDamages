@@ -6,14 +6,14 @@ package types
 	 * ...
 	 * @author Relena
 	 */
-	public class Damage
+	public class Damages
 	{
 		private var _damageNormal:Range;
 		private var _damageCritical:Range;
 		private var _distance:int;
 		private var _invulnerability:Boolean;
 		
-		public function Damage(damageNormal:Range, damageCritical:Range, distance:int = 0, invulnerability:Boolean = false)
+		public function Damages(damageNormal:Range, damageCritical:Range, distance:int = 0, invulnerability:Boolean = false)
 		{
 			_damageNormal = damageNormal;
 			_damageCritical = damageCritical;

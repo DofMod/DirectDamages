@@ -50,7 +50,7 @@ package ui
 			}
 			else if (SpellManager.getInstance().getCastSpell())
 			{
-				displayDamage(DamageUtils.computeDamages(SpellManager.getInstance().getCastSpell(), monsterInfos, _distance), monsterInfos.stats.lifePoints);
+				displayDamages(DamageUtils.computeDamages(SpellManager.getInstance().getCastSpell(), monsterInfos, _distance), monsterInfos.stats.lifePoints);
 			}
 			else
 			{

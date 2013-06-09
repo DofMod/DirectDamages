@@ -15,7 +15,7 @@ package ui.abstract
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import managers.SpellManager;
-	import types.Damage;
+	import types.Damages;
 	
 	/**
 	 * Abstract tooltip ui class.
@@ -159,37 +159,37 @@ package ui.abstract
 		 * @param	damage
 		 * @param	monsterLife
 		 */
-		protected function displayDamage(damage:Damage, monsterLife:int):void
+		protected function displayDamages(damages:Damages, monsterLife:int):void
 		{
-			if (damage == null)
+			if (damages == null)
 				return;
 			
-			if (damage.isInvulnerable())
+			if (damages.isInvulnerable())
 			{
 				lbl_info.appendText("Invulnérable", "etheral");
 				
 				return;
 			}
 			
-			if (damage.distance > 0)
-				lbl_info.appendText(damage.distance + ": ", "itemset");
+			if (damages.distance > 0)
+				lbl_info.appendText(damages.distance + ": ", "itemset");
 			
-			if (damage.min != damage.max && (monsterLife - damage.min) > 0)
+			if (damages.min != damages.max && (monsterLife - damages.min) > 0)
 			{
-				lbl_info.appendText(damage.min.toString(), "p");
+				lbl_info.appendText(damages.min.toString(), "p");
 				lbl_info.appendText(" à ", "p");
 			}
 			
-			lbl_info.appendText(((monsterLife - damage.max) > 0) ? damage.max.toString() : "mort", "shield");
+			lbl_info.appendText(((monsterLife - damages.max) > 0) ? damages.max.toString() : "mort", "shield");
 			lbl_info.appendText(" (", "p");
 			
-			if (damage.minCritical != damage.maxCritical && (monsterLife - damage.minCritical) > 0)
+			if (damages.minCritical != damages.maxCritical && (monsterLife - damages.minCritical) > 0)
 			{
-				lbl_info.appendText(damage.minCritical.toString(), "p");
+				lbl_info.appendText(damages.minCritical.toString(), "p");
 				lbl_info.appendText(" à ", "p");
 			}
 			
-			lbl_info.appendText(((monsterLife - damage.maxCritical) > 0) ? damage.maxCritical.toString() : "mort", "etheral");
+			lbl_info.appendText(((monsterLife - damages.maxCritical) > 0) ? damages.maxCritical.toString() : "mort", "etheral");
 			lbl_info.appendText(")", "p");
 		}
 		

@@ -75,7 +75,7 @@ package ui
 			}
 			else if (SpellManager.getInstance().getCastSpell())
 			{
-				displayDamage(DamageUtils.computeDamages(SpellManager.getInstance().getCastSpell(), characterInfos, _distance), characterInfos.stats.lifePoints);
+				displayDamages(DamageUtils.computeDamages(SpellManager.getInstance().getCastSpell(), characterInfos, _distance), characterInfos.stats.lifePoints);
 			}
 			else
 			{
