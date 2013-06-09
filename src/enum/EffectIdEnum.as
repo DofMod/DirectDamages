@@ -19,6 +19,8 @@ package enum
 		public static const NEUTRAL_THEFT:int = 95; // ??
 		public static const NEUTRAL:int = 100;
 		public static const POWER_WEAPON:int = 1144; // Skill bonus
+		public static const ERODED_HP_PERCENT:int = 1093;
+		
 		public static const STATE_APPLY:int = 950;
 		public static const STATE_REMOVE:int = 951;
 		public static const STATE_DISABLE:int = 952;
