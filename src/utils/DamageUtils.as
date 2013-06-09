@@ -374,7 +374,7 @@ package utils
 		 */
 		private static function applyBonus(damage:Range, bonusCoeff:Number):Range
 		{
-			return damage.applyCoeff(bonusCoeff);
+			return damage.mult(bonusCoeff);
 		}
 		
 		/**

@@ -10,17 +10,15 @@ package types
 		public var min:int;
 		public var max:int;
 		
-		public function Range()
+		public function Range(min:int = 0, max:int = 0)
 		{
-			min = max = 0;
+			this.min = min;
+			this.max = max;
 		}
 		
-		public function applyCoeff(coeff:Number):Range
+		public function mult(factor:Number):Range
 		{
-			min *= coeff;
-			max *= coeff;
-			
-			return this;
+			return new Range(min * factor, max * factor);
 		}
 		
 		public function toString():String
