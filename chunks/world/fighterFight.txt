@@ -31,10 +31,10 @@
 	<Container name="tx_back" strata="LOW">
 		<Anchors>
 			<Anchor relativePoint="TOPLEFT">
-				<AbsDimension x="-5" y="-5" />
+				<AbsDimension x="-4" y="-4" />
 			</Anchor>
 			<Anchor relativePoint="BOTTOMRIGHT">
-				<AbsDimension x="5" y="5" />
+				<AbsDimension x="4" y="4" />
 			</Anchor>
 		</Anchors>
 		<shadowColor>[colors.ui.shadow]</shadowColor>

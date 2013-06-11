@@ -97,45 +97,27 @@ package ui.abstract
 			
 			if (lbl_info.text != "")
 			{
-				// Center lbl_info
-				var centerX:int = (lbl_info.width - lbl_name.width) / 2;
-				if (centerX < 0)
-				{
-					lbl_info.y = 20;
-					lbl_info.x = -centerX;
-				}
-				else
-				{
-					lbl_info.x = 0;
-					lbl_info.y = 20;
-					lbl_name.x = centerX;
-				}
+				lbl_info.x = (lbl_name.width - lbl_info.width) / 2;
+				lbl_info.y = 20;
 				
-				var leftXWithPadding:int = lbl_name.x + lbl_name.width + 8;
-				if (leftXWithPadding < lbl_info.width + 8)
+				if (lbl_info.width > lbl_name.width)
 				{
+					tx_back.x = lbl_info.x - 4;
 					tx_back.width = lbl_info.width + 8;
 				}
 				else
 				{
-					tx_back.width = leftXWithPadding;
+					tx_back.x = lbl_name.x - 4;
+					tx_back.width = lbl_name.width + 8;					
 				}
 				
 				tx_back.height = infosCtr.height + 8;
 			}
 			else
 			{
-				if (lbl_name.width < 60)
-				{
-					lbl_name.x = (60 - lbl_name.width) / 2;
-					tx_back.width = 68;
-				}
-				else
-				{
-					tx_back.width = lbl_name.width + 8;
-				}
-				
-				tx_back.height = infosCtr.height + 5;
+				tx_back.x = lbl_name.x - 4;
+				tx_back.width = lbl_name.width + 8;				
+				tx_back.height = infosCtr.height + 8;
 			}
 			
 			infosCtr.addContent(tx_back, 0);
