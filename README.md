@@ -29,6 +29,10 @@ Ne sont pas encore pris en compte:
 
 ![Royalmouth invulnérable](http://imageshack.us/a/img703/4894/invulnerm.png "Royalmouth invulnérable")
 
+Une vidéo de présentation du module est visualisable sur la chaine Youtube [DofusModules](https://www.youtube.com/user/dofusModules "Youtube, DofusModules"):
+
+[Lien vers la vidéo](https://www.youtube.com/watch?v=r6u7f9htF44 "Vidéo de présentation du module")
+
 Download + Compile:
 -------------------
 
