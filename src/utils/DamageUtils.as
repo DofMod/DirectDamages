@@ -381,13 +381,19 @@ package utils
 		}
 		
 		/**
-		 * Return the power of the skill bonus (if present).
+		 * Return the power of the skill bonus.
 		 * 
-		 * @return
+		 * @param	fighterId	Identifier of the target (0 = the player).
+		 * @return	The value of the skill bonus (0 if not present).
 		 */
-		public static function getSkillBonus():int
+		public static function getSkillBonus(fighterId:int = 0):int
 		{
-			for each(var buff:Object in Api.fight.getAllBuffEffects(Api.fight.getCurrentPlayedFighterId()).buffArray[BuffEffectCategoryEnum.ACTIVE_BONUS])
+			if (fighterId == 0)
+			{
+				fighterId = Api.fight.getCurrentPlayedFighterId();
+			}
+			
+			for each(var buff:Object in Api.fight.getAllBuffEffects(fighterId).buffArray[BuffEffectCategoryEnum.ACTIVE_BONUS])
 			{
 				if (buff.effects.effectId == EffectIdEnum.SKILL_WEAPON)
 				{
