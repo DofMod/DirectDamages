@@ -37,8 +37,11 @@ Download + Compile:
 -------------------
 
 1. Install Git
-2. git clone https://github.com/Dofus/DirectDamages.git
-3. mxmlc -output DirectDamages.swf -compiler.library-path+=./modules-library.swc -source-path src -keep-as3-metadata Api Module DevMode -- src/DirectDamages.as
+2. git clone --recursive https://github.com/Dofus/DirectDamages.git
+3. cd DirectDamages/dmUtils
+4. compile dmUtils library (see README)
+5. cd ..
+6. mxmlc -output DirectDamages.swf -compiler.library-path+=./modules-library.swc -compiler.library-path+=./dmUtils/dmUtils.swc -source-path src -keep-as3-metadata Api Module DevMode -- src/DirectDamages.as
 
 Installation:
 =============
@@ -46,7 +49,6 @@ Installation:
 1. Create a new *DirectDamages* folder in the *ui* folder present in your Dofus instalation folder. (i.e. *ui/DirectDamages*)
 2. Copy the following files in this new folder:
     * xml/
-    * css/
     * chunks/
     * DirectDamages.swf
     * Relena_DirectDamages.dm
