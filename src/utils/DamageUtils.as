@@ -407,14 +407,14 @@ package utils
 		/**
 		 * Return if the target is invulnerable.
 		 * 
-		 * @param	targetId Id of the target.
+		 * @param	fighterId Id of the target.
 		 * @return	Is the target invulnerable.
 		 */
-		public static function isInvulnerable(targetId:int):Boolean
+		public static function isInvulnerable(fighterId:int):Boolean
 		{
 			var invulnerable:Boolean = false;
 			
-			for each(var buff:Object in Api.fight.getAllBuffEffects(targetId).buffArray[BuffEffectCategoryEnum.STATES])
+			for each(var buff:Object in Api.fight.getAllBuffEffects(fighterId).buffArray[BuffEffectCategoryEnum.STATES])
 			{
 				if (buff.effects.effectId == EffectIdEnum.STATE_DISABLE && buff.effects.parameter0 == EffectIdEnum.STATE_INVULNERABLE)
 				{
