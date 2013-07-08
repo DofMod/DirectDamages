@@ -15,7 +15,7 @@ package ui.abstract
 	import flash.events.TimerEvent;
 	import flash.utils.Timer;
 	import managers.SpellManager;
-	import types.Damages;
+	import types.SpellDamages;
 	
 	/**
 	 * Abstract tooltip ui class.
@@ -141,12 +141,12 @@ package ui.abstract
 		 * @param	damage
 		 * @param	monsterLife
 		 */
-		protected function displayDamages(damages:Damages, monsterLife:int):void
+		protected function displayDamages(damages:SpellDamages, monsterLife:int):void
 		{
 			if (damages == null)
 				return;
 			
-			if (damages.isInvulnerable())
+			if (damages.invulnerability)
 			{
 				lbl_info.appendText("Invulnérable", "etheral");
 				
