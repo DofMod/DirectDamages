@@ -1,0 +1,3 @@
+[submodule "dmUtils"]
+	path = dmUtils
+	url = https://github.com/Dofus/DofusModulesUtils.git
