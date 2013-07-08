@@ -7,10 +7,10 @@ package utils
 	import d2network.CharacterCharacteristicsInformations;
 	import d2network.GameFightFighterInformations;
 	import d2network.GameFightMinimalStats;
-	import enum.BuffEffectCategoryEnum;
-	import enum.EffectIdEnum;
-	import enum.ItemTypeIdEnum;
-	import enum.TargetMaskEnum;
+	import enums.BuffEffectCategoryEnum;
+	import enums.EffectIdEnum;
+	import enums.ItemTypeIdEnum;
+	import enums.TargetMaskEnum;
 	import types.Damages;
 	import types.Range;
 	
@@ -266,8 +266,8 @@ package utils
 			
 			switch (effect.effectId)
 			{
-				case EffectIdEnum.WATER_THEFT:
-				case EffectIdEnum.WATER:
+				case EffectIdEnum.ATTACK_WATER_THEFT:
+				case EffectIdEnum.ATTACK_WATER:
 					var chance:int = characterStats.chance.base + characterStats.chance.objectsAndMountBonus + characterStats.chance.contextModif;
 					chance = chance > 0 ? chance : 0;
 					
@@ -278,8 +278,8 @@ package utils
 					
 					break;
 					
-				case EffectIdEnum.EARTH_THEFT:
-				case EffectIdEnum.EARTH:
+				case EffectIdEnum.ATTACK_EARTH_THEFT:
+				case EffectIdEnum.ATTACK_EARTH:
 					var strength:int = characterStats.strength.base + characterStats.strength.objectsAndMountBonus + characterStats.strength.contextModif;
 					strength = strength > 0 ? strength : 0;
 					
@@ -290,8 +290,8 @@ package utils
 					
 					break;
 					
-				case EffectIdEnum.AIR_THEFT:
-				case EffectIdEnum.AIR:
+				case EffectIdEnum.ATTACK_AIR_THEFT:
+				case EffectIdEnum.ATTACK_AIR:
 					var agility:int = characterStats.agility.base + characterStats.agility.objectsAndMountBonus + characterStats.agility.contextModif;
 					agility = agility > 0 ? agility : 0;
 					
@@ -302,8 +302,8 @@ package utils
 					
 					break;
 					
-				case EffectIdEnum.FIRE_THEFT:
-				case EffectIdEnum.FIRE:
+				case EffectIdEnum.ATTACK_FIRE_THEFT:
+				case EffectIdEnum.ATTACK_FIRE:
 					var intelligence:int = characterStats.intelligence.base + characterStats.intelligence.objectsAndMountBonus + characterStats.intelligence.contextModif;
 					agility = agility > 0 ? agility : 0;
 					
@@ -314,8 +314,8 @@ package utils
 					
 					break;
 					
-				case EffectIdEnum.NEUTRAL_THEFT:
-				case EffectIdEnum.NEUTRAL:
+				case EffectIdEnum.ATTACK_NEUTRAL_THEFT:
+				case EffectIdEnum.ATTACK_NEUTRAL:
 					strength = characterStats.strength.base     + characterStats.strength.objectsAndMountBonus     + characterStats.strength.contextModif;
 					strength = strength > 0 ? strength : 0;
 					
@@ -326,11 +326,11 @@ package utils
 					
 					break;
 					
-				case EffectIdEnum.ERODED_HP_PERCENT:
+				case EffectIdEnum.ATTACK_ERODED_HP_PERCENT:
 					
 					break;
 					
-				case EffectIdEnum.PUSHBACK:
+				case EffectIdEnum.ATTACK_PUSHBACK:
 					var characterLvl:int = Api.fight.getFighterLevel(Api.fight.getCurrentPlayedFighterId());
 					var pushDamage:int = characterStats.pushDamageBonus.base + characterStats.pushDamageBonus.objectsAndMountBonus + characterStats.pushDamageBonus.contextModif;
 					
@@ -399,7 +399,7 @@ package utils
 		{
 			for each(var buff:Object in Api.fight.getAllBuffEffects(Api.fight.getCurrentPlayedFighterId()).buffArray[BuffEffectCategoryEnum.ACTIVE_BONUS])
 			{
-				if (buff.effects.effectId == EffectIdEnum.POWER_WEAPON)
+				if (buff.effects.effectId == EffectIdEnum.SKILL_WEAPON)
 				{
 					return buff.effects.parameter0;
 				}
@@ -447,37 +447,37 @@ package utils
 		{
 			switch (effect.effectId) 
 			{
-				case EffectIdEnum.WATER_THEFT:
-				case EffectIdEnum.WATER:
+				case EffectIdEnum.ATTACK_WATER_THEFT:
+				case EffectIdEnum.ATTACK_WATER:
 					damage.min = (1 - targetStats.waterElementResistPercent / 100) * (damage.min - targetStats.waterElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.waterElementResistPercent / 100) * (damage.max - targetStats.waterElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case EffectIdEnum.EARTH_THEFT:
-				case EffectIdEnum.EARTH:
+				case EffectIdEnum.ATTACK_EARTH_THEFT:
+				case EffectIdEnum.ATTACK_EARTH:
 					damage.min = (1 - targetStats.earthElementResistPercent / 100) * (damage.min - targetStats.earthElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.earthElementResistPercent / 100) * (damage.max - targetStats.earthElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case EffectIdEnum.AIR_THEFT:
-				case EffectIdEnum.AIR:
+				case EffectIdEnum.ATTACK_AIR_THEFT:
+				case EffectIdEnum.ATTACK_AIR:
 					damage.min = (1 - targetStats.airElementResistPercent / 100) * (damage.min - targetStats.airElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.airElementResistPercent / 100) * (damage.max - targetStats.airElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case EffectIdEnum.FIRE_THEFT:
-				case EffectIdEnum.FIRE:
+				case EffectIdEnum.ATTACK_FIRE_THEFT:
+				case EffectIdEnum.ATTACK_FIRE:
 					damage.min = (1 - targetStats.fireElementResistPercent / 100) * (damage.min - targetStats.fireElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.fireElementResistPercent / 100) * (damage.max - targetStats.fireElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case EffectIdEnum.NEUTRAL_THEFT:
-				case EffectIdEnum.NEUTRAL:
+				case EffectIdEnum.ATTACK_NEUTRAL_THEFT:
+				case EffectIdEnum.ATTACK_NEUTRAL:
 					damage.min = (1 - targetStats.neutralElementResistPercent / 100) * (damage.min - targetStats.neutralElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					damage.max = (1 - targetStats.neutralElementResistPercent / 100) * (damage.max - targetStats.neutralElementReduction - (isCriticalDamage ? targetStats.criticalDamageFixedResist : 0));
 					
 					break;
-				case EffectIdEnum.PUSHBACK:
+				case EffectIdEnum.ATTACK_PUSHBACK:
 					damage.min -= targetStats.pushDamageFixedResist;
 					damage.max -= targetStats.pushDamageFixedResist;
 					
