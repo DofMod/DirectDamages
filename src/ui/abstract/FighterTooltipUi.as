@@ -1,5 +1,6 @@
 package ui.abstract
 {
+	import d2api.FightApi;
 	import d2api.SystemApi;
 	import d2api.TooltipApi;
 	import d2api.UiApi;
@@ -16,6 +17,7 @@ package ui.abstract
 	import flash.utils.Timer;
 	import managers.SpellManager;
 	import types.SpellDamages;
+	import utils.DamagesUtils;
 	
 	/**
 	 * Abstract tooltip ui class.
@@ -28,6 +30,7 @@ package ui.abstract
 		public var sysApi:SystemApi;
 		public var tooltipApi:TooltipApi;
 		public var uiApi:UiApi;
+		public var fightApi:FightApi;
 		
 		// Components
 		public var mainCtr:Object;
@@ -57,6 +60,8 @@ package ui.abstract
 		 */
 		public function main(params:Object = null):void
 		{
+			DamagesUtils.init(sysApi, fightApi);
+			
 			_tooltipParam = params;
 			_distance = 0;
 			

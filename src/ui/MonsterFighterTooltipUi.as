@@ -7,13 +7,12 @@ package ui
 	import d2network.GameFightMonsterInformations;
 	import managers.SpellManager;
 	import ui.abstract.FighterTooltipUi;
-	import utils.DamageUtils;
+	import utils.DamagesUtils;
 	
 	public class MonsterFighterTooltipUi extends FighterTooltipUi
 	{
 		// APIs
 		public var dataApi:DataApi;
-		public var fightApi:FightApi;
 		
 		/**
 		 *
@@ -50,7 +49,7 @@ package ui
 			}
 			else if (SpellManager.getInstance().getCastSpell())
 			{
-				displayDamages(DamageUtils.computeDamages(SpellManager.getInstance().getCastSpell(), monsterInfos, _distance), monsterInfos.stats.lifePoints);
+				displayDamages(DamagesUtils.computeDamages(SpellManager.getInstance().getCastSpell(), monsterInfos, _distance), monsterInfos.stats.lifePoints);
 			}
 			else
 			{

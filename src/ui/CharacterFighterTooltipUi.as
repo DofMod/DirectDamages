@@ -11,13 +11,12 @@ package ui
 	import flash.geom.ColorTransform;
 	import managers.SpellManager;
 	import ui.abstract.FighterTooltipUi;
-	import utils.DamageUtils;
+	import utils.DamagesUtils;
 	
 	public class CharacterFighterTooltipUi extends FighterTooltipUi
 	{
 		// APIs
 		public var dataApi:DataApi;
-		public var fightApi:FightApi;
 		public var playerApi:PlayedCharacterApi;
 		public var systemApi:SystemApi;
 		
@@ -75,7 +74,7 @@ package ui
 			}
 			else if (SpellManager.getInstance().getCastSpell())
 			{
-				displayDamages(DamageUtils.computeDamages(SpellManager.getInstance().getCastSpell(), characterInfos, _distance), characterInfos.stats.lifePoints);
+				displayDamages(DamagesUtils.computeDamages(SpellManager.getInstance().getCastSpell(), characterInfos, _distance), characterInfos.stats.lifePoints);
 			}
 			else
 			{
