@@ -83,7 +83,7 @@ package utils
 				if (effectDamages  == null)
 					continue;
 				
-				if (distance != 0 && isSpellZone(spell.spellZoneEffects, ii))
+				if (distance != 0 && isSpellZone(spell, ii))
 					effectDamages = applyBonus(effectDamages , 1.0 - 0.1 * distance);
 				
 				effectDamages = applyReductions(effect, effectDamages, targetInfos.stats);
@@ -103,7 +103,7 @@ package utils
 				if (effectDamages == null)
 					continue;
 				
-				if (distance != 0 && isSpellZone(spell.spellZoneEffects, ii))
+				if (distance != 0 && isSpellZone(spell, ii))
 					effectDamages = applyBonus(effectDamages, 1.0 - 0.1 * distance);
 				
 				effectDamages = applyReductions(effect, effectDamages, targetInfos.stats, true);
@@ -337,15 +337,15 @@ package utils
 		}
 		
 		/**
-		 * Test if the spell do zone damages.
+		 * Test if the effect number 'effectIndex' of the spell do zone damages.
 		 * 
-		 * @param	spellZoneEffects	Effect of the spell.
-		 * @param	Index	Index of the effect.
+		 * @param	spell	The spell to test.
+		 * @param	effectIndex	Index of the effect.
 		 * @return	True if the spell do zone damages.
 		 */
-		private static function isSpellZone(spellZoneEffects:Object, index:int):Boolean
+		public static function isSpellZone(spell:SpellWrapper, effectIndex:int):Boolean
 		{
-			var zone:Object = (index < spellZoneEffects.length) ? spellZoneEffects[index] : spellZoneEffects[0];
+			var zone:Object = (effectIndex< spell.spellZoneEffects.length) ? spell.spellZoneEffects[effectIndex] : spell.spellZoneEffects[0];
 			
 			// 80 = Point
 			if (zone.zoneShape == 80)
