@@ -11,8 +11,8 @@ package utils
 	import enums.EffectIdEnum;
 	import enums.ItemTypeIdEnum;
 	import enums.TargetMaskEnum;
-	import types.SpellDamages;
 	import types.EffectDamages;
+	import types.SpellDamages;
 	
 	/**
 	 * ...
