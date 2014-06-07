@@ -1,0 +1,13 @@
+[
+{
+    "name": "${name}",
+    "author": "${author}",
+    "contributors": ${contributors},
+    "url": "https://github.com/DofMod/${name}/releases/download/${tag}/${filename}.zip",
+    "description": "Compute and display the damages of your spells/weapon",
+    "category": "Fight",
+    "version": "${version}",
+    "dofusVersion": "${dofusVersion}",
+    "lastUpdateDate": "${date}"
+}
+]
