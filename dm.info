@@ -1,0 +1,17 @@
+<?xml version="1.0" ?><module>
+
+	<header>
+		<name>${name}</name>
+		<version>${version}</version>
+		<dofusVersion>${dofusVersion}</dofusVersion>
+		<author>${author}</author>
+		<shortDescription>${descriptionShort}</shortDescription>
+		<description>${description}</description>
+	</header>
+
+	<uis>
+		<!-- <ui class="ui::SpellsTrackerConfig" file="xml/SpellsTrackerConfig.xml" name="SpellsTrackerConfig"/> -->
+	</uis>
+	
+	<script>${name}.swf</script>
+</module>

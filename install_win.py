@@ -14,7 +14,10 @@ verbose = False
 
 moduleName = "DirectDamages"
 authorName = "Relena"
-contributorsName = []
+contributorsName = [] # List of String
+descriptionShort = "Compute and display the damages of your spells/weapon"
+description = "Compute and display the damages of your spells/weapon"
+categories = "Fight" # CSV format
 
 srcPath = "."
 dstPath = op.normpath(op.join(os.environ['PROGRAMFILES(X86)'], "Dofus2Beta/app/ui", authorName + "_" + moduleName))
@@ -41,37 +44,59 @@ def makeDir(dirname):
 
 	os.makedirs(dirname)
 
-def updateModFile():
-	if not op.isfile(op.normpath(op.join(srcPath, "mod.info"))):
-		return
-
+def getVersion():
 	command = ['git', 'describe', '--long']
 	out = subprocess.Popen(command, stdout=subprocess.PIPE)
 	(sout, serr) = out.communicate()
 
 	result = re.match(r"v(-?[0-9|\.]+)_(-?[0-9|\.]+)-(-?[0-9|\.]+)", sout)
-	dofusVersion = result.group(1)
-	version = result.group(2)
-	revision = result.group(3)
+	if result is None:
+		raise RuntimeError("Wrong tag format")
 
+	return {"dofusVersion" : result.group(1), "version" : result.group(2), "revision" : result.group(3)}
+
+def getReleaseDate():
 	command = ['git', 'log', '--tags', '--simplify-by-decoration', '-1', '--pretty=%ai']
 	out = subprocess.Popen(command, stdout=subprocess.PIPE)
 	(sout, serr) = out.communicate()
 
 	result = re.match(r"(-?[0-9|\.]+)-(-?[0-9|\.]+)-(-?[0-9|\.]+)", sout)
-	date = result.group(0)
+	if result is None:
+		raise RuntimeError("Wrong date format")
+
+	return result.group(0)
+
+def updateModFile(version, date):
+	if not op.isfile(op.normpath(op.join(srcPath, "mod.info"))):
+		return
 
 	with open(op.normpath(op.join(srcPath, "mod.info")), "r") as file:
 		data = file.read()
 		data = data.replace("${name}", moduleName)
 		data = data.replace("${author}", authorName)
-		data = data.replace("${dofusVersion}", dofusVersion)
-		data = data.replace("${version}", version)
-		data = data.replace("${tag}", "v" + dofusVersion + "_" + version)
+		data = data.replace("${dofusVersion}", version["dofusVersion"])
+		data = data.replace("${version}", version["version"])
+		data = data.replace("${tag}", "v" + version["dofusVersion"] + "_" + version["version"])
 		data = data.replace("${date}", date)
-		data = data.replace("${filename}", moduleName + "_" + dofusVersion + "_" + version)
 		data = data.replace("${contributors}", json.dumps(contributorsName))
+		data = data.replace("${descriptionShort}", descriptionShort)
+		data = data.replace("${categories}", categories)
 		with open(op.normpath(op.join(srcPath, "mod.json")), "w") as outFile:
+			outFile.write(data)
+
+def updateDmFile(version):
+	if not op.isfile(op.normpath(op.join(srcPath, "dm.info"))):
+		return
+
+	with open(op.normpath(op.join(srcPath, "dm.info")), "r") as file:
+		data = file.read()
+		data = data.replace("${name}", moduleName)
+		data = data.replace("${author}", authorName)
+		data = data.replace("${dofusVersion}", version["dofusVersion"])
+		data = data.replace("${version}", version["version"])
+		data = data.replace("${description}", description)
+		data = data.replace("${descriptionShort}", descriptionShort)
+		with open(op.normpath(op.join(srcPath, authorName + "_" + moduleName + ".dm")), "w") as outFile:
 			outFile.write(data)
 
 if __name__ == '__main__':
@@ -84,7 +109,13 @@ if __name__ == '__main__':
 			verbose = True
 
 	makeDir(dstPath)
-	updateModFile()
+
+	version = getVersion()
+	date = getReleaseDate()
+
+	updateModFile(version, date)
+	updateDmFile(version)
+
 	copyFile(authorName + "_" + moduleName + ".dm")
 	copyFile(moduleName + ".swf")
 	# copyFile("shortcuts.xml")

@@ -3,9 +3,9 @@
     "name": "${name}",
     "author": "${author}",
     "contributors": ${contributors},
-    "url": "https://github.com/DofMod/${name}/releases/download/${tag}/${filename}.zip",
-    "description": "Compute and display the damages of your spells/weapon",
-    "category": "Fight",
+    "url": "https://github.com/DofMod/${name}/releases/download/${tag}/${name}_${dofusVersion}_${version}.zip",
+    "description": "${descriptionShort}",
+    "category": "${categories}",
     "version": "${version}",
     "dofusVersion": "${dofusVersion}",
     "lastUpdateDate": "${date}"
